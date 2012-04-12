@@ -1,4 +1,5 @@
 PROGRAM Conflate;
+USES Crt;
  { Written by Michele Cottrell, ADFA, Computer Centre, Canberra }
  { Translated into Turbo by Boyd Nation, Mississippi State University
    Computing Center, 1986 }
@@ -330,6 +331,7 @@ VAR
 PROCEDURE Get_name(VAR x:Sstring);
 VAR 
     j                                   : Integer;
+    tmp : Integer;
 Begin 
     Readln(tempname);
     x.lenth := length(tempname);
@@ -379,7 +381,8 @@ Begin  { GET SYSIN ??? }                { Set Up }
     Begin
         eoff[i]     := false;
         inactive[i] := false;
-        Read_f(i);
+        tmp := i;
+        Read_f(tmp);
         Sassign(inputseq[i],Substr(inrec,1,8));
         Assine(inputrec[i],Substr(inrec,9,0));
         Read_file(i);
@@ -785,14 +788,14 @@ End; { of Fill_tables }
 PROCEDURE Produce_outputs;
 VAR 
     i                                   : Integer;
-    j                                   : Integer;
-    k                                   : Integer;
     nextm                               : Integer;
 
 PROCEDURE Do_one_master(mindex:Integer;mainentry:Boolean);
 VAR 
     domore                              : Boolean;
     i                                   : Integer;
+    j                                   : Integer;
+    k                                   : Integer;
     nextc                               : Integer;
     nextm                               : Integer;
     outsig                              : Stringtype;
@@ -987,7 +990,7 @@ Begin  { MAIN }
     If error then
     Begin
         Writeln('Press any key to continue.');
-        Read(kbd,tmpch)
+        tmpch := ReadKey()
     End;
     Close(conflated)
 End.

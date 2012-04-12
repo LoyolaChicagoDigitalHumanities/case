@@ -1,4 +1,5 @@
 PROGRAM print_cancel;
+USES Crt, Printer;
 
 CONST
     impossible_seq = 'xxxxxxx';
@@ -37,6 +38,7 @@ End;
 
 PROCEDURE newline;
 Begin
+    Assignlst (lst,'|/usr/bin/lpr -m');
     Writeln(lst);
     lineno := lineno + 1;
     If lineno > 58 then

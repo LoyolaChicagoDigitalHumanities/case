@@ -1,4 +1,5 @@
 PROGRAM print_conflt;
+USES Crt, Printer;
 
 TYPE
     String3  = String[3];
@@ -33,6 +34,7 @@ End;
 
 PROCEDURE newline;
 Begin
+    Assignlst (lst,'|/usr/bin/lpr -m');
     Writeln(lst);
     linelen := 0;
     lastch := ' ';

@@ -1,4 +1,5 @@
 PROGRAM sortvariants;
+USES Crt;
 
 TYPE
     Linetype  = (mline,labeline,cline);

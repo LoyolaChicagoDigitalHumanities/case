@@ -1,4 +1,5 @@
 PROGRAM edit_cancels;
+USES Crt;
 {   This program removes the editing notations from an input file. These
     notations are documented fully in the CASE Users Guide. The syntax of
     the file is described by the syntax flow diagrams included in the
@@ -184,7 +185,7 @@ Begin
     Close(inpfile);
     Close(outfile);
     Writeln('Press any key to continue.');
-    Read(kbd,ch);
+    ch := ReadKey();
     If buffered then
         Halt(1)
     Else
@@ -268,7 +269,7 @@ Begin
     End
 End;
 
-FUNCTION getsym;
+FUNCTION getsym : symbol;
 { Return the next symbol from Input after processing | and || symbols }
 VAR
     open : Boolean;
@@ -563,7 +564,7 @@ Begin {main file}
             Close(inpfile);
             Close(outfile);
             Writeln('Press any key to continue.');
-            Read(kbd,ch);
+            ch := ReadKey();
             If buffered then
                 Halt(1)
             Else
@@ -583,7 +584,7 @@ Begin
     If error then
     Begin
         Writeln('Press any key to continue.');
-        Read(kbd,ch)
+        ch := ReadKey()
     End;
     If buffered then
         Halt(1)

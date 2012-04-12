@@ -1,4 +1,5 @@
 PROGRAM Menu;
+USES Crt;
 VAR
     choice      : Char;
     num_choice  : Integer;
@@ -25,7 +26,7 @@ Begin
   Writeln;
   Writeln('                       Press key and wait for questions.');
   Repeat
-    Read(kbd,choice)
+    choice := ReadKey()
   Until choice in ['0'..'9'];
   num_choice := ord(choice) - 48;
   Halt(num_choice)

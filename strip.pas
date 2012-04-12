@@ -1,4 +1,5 @@
 PROGRAM Strip;
+USES Crt;
 
 TYPE
     String80    = String[80];
@@ -193,7 +194,7 @@ Begin  { main program }
     If error then
     Begin
         Writeln('Hit any key to continue.');
-        Read(kbd,cchr)
+        cchr := ReadKey()
     End
 End.
 

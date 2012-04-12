@@ -1,4 +1,5 @@
 PROGRAM Precollate;
+USES Crt;
     { Written by Michele Cottrell, ADFA, Computer Centre, Canberra, 1985 }
     { Translated slowly into Turbo by Boyd Nation, Mississippi State
       University Computing Center, 1986 }

@@ -1,4 +1,5 @@
 PROGRAM strip_vars;
+USES Crt;
 
 {   Takes a file with pickup words and outputs the variant part only
     with the sigla attached.
@@ -335,7 +336,6 @@ End;
 PROCEDURE strip;
 
 PROCEDURE find(c : Char; trailsp : Boolean);
-{ Read until a <space> <C> {<space>}{ sequence is found in the text }
 TYPE
     finitestate = (needsp1,needbrack,needsp2,done);
 VAR
@@ -432,7 +432,6 @@ Begin
     If errors then
     Begin
         Writeln('Press any key to continue.');
-        Read(kbd,buf)
+        buf := ReadKey()
     End
 End.
-

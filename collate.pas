@@ -1,4 +1,5 @@
 PROGRAM Collate;
+USES Crt;
     { Written by Michele Cottrell, ADFA, Computer Centre, Canberra }
     { Translated into Turbo by Boyd Nation, Mississippi State University
       Computing Center, 1986 }
@@ -84,7 +85,7 @@ VAR
     startpoints         : Text;
     startrec            : Startr;
     temp                : Stringtype;
-    tempfile            : Text;
+    { tempfile            : Text; }
     tmp                 : Integer;
     variants            : Text;
     varkey              : Integer;
@@ -314,13 +315,13 @@ Begin
 End;
 
 PROCEDURE Read_file(which : Integer);
-VAR 
-    i                   : Integer;
 
 PROCEDURE Assign_it;
+VAR 
+    ii                   : Integer;
 Begin
-    For i := 1 to seqmax do
-        seq[which][i] := frec[which].char[i];
+    For ii := 1 to seqmax do
+        seq[which][ii] := frec[which].char[ii];
     Assine(temp,Substr(frec[which],9,0));
     If not forwards_scan then
         Assine(temp,Conkat(space,temp));
@@ -781,7 +782,6 @@ VAR
     lastone             : Integer;
     okay                : Boolean;
     try                 : Integer;
-    wh                  : Integer;
 
 FUNCTION Extend(masptr, comptr : Integer) : Boolean;
 VAR
@@ -798,7 +798,8 @@ End;
 PROCEDURE Reset_table(masptr, comptr: Integer);
 VAR 
     i                   : Integer;
-
+    j                   : Integer;
+    wh                  : Integer;
 Begin   
     For i := 1 to lastw[1] - masptr + 1 do
     Begin   
@@ -1057,7 +1058,7 @@ Begin { of Backwards }
 End;
 
 Begin { main program }
-    ClrScr;
+    { ClrScr; }
     lb_space.char[1] := ' '; 
     lb_space.char[2] := '(';
     lb_space.lenth   := 2;
@@ -1104,13 +1105,15 @@ Begin { main program }
         Reset(variants);
         {$i+}
         tmp := ioresult;
+        Write('IO Result ');
+        WriteLn(tmp);
         overwrite := 'n';
         If tmp = 0 then
         Begin
           Write('File already on disk.  Do you want to write over it (y/n)? ');
           Readln(overwrite)
         End
-    Until (tmp = 1) or (overwrite = 'y') or (overwrite = 'Y');
+    Until (tmp <> 0) or (overwrite = 'y') or (overwrite = 'Y');
     Write('Do you want an error file created? ');
     Readln(want_errorc);
     want_error := not((want_errorc = 'n') or (want_errorc = 'N'));
@@ -1132,7 +1135,7 @@ Begin { main program }
               Write('  Do you want to write over it (y/n)? ');
               Readln(overwrite)
             End
-        Until (tmp = 1) or (overwrite = 'y') or (overwrite = 'Y');
+        Until (tmp <> 0) or (overwrite = 'y') or (overwrite = 'Y');
         Rewrite(errorfile)
     End;
     Assign(master,'outmst.tmp');
@@ -1160,7 +1163,7 @@ Begin { main program }
     If error then
     Begin
         Writeln('Hit any key to continue.');
-        Read(kbd,overwrite)
+        { overwrite := ReadKey() }
     End;
     If (delet = 'y') or (delet = 'Y') then
         Halt(1)

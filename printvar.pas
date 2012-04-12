@@ -1,4 +1,5 @@
 PROGRAM punct_print;
+USES Crt, Printer;
 
 {   Prints out a file with punctation only variants marked }
 
@@ -38,7 +39,9 @@ End;
 
 PROCEDURE newline;
 Begin
-    Writeln(lst);
+
+  Assignlst (lst,'|/usr/bin/lpr -m');
+  Writeln(lst);
     lineno := lineno + 1;
     If lineno > 58 then
     Begin

@@ -1,4 +1,5 @@
 PROGRAM isolate_cancels;
+USES Crt;
 
 CONST
     max_word_len = 32;
@@ -414,7 +415,7 @@ Begin           {main program}
     If error then
     Begin
         Writeln('Press any key to continue.');
-        Read(kbd,bufch)
+        bufch := ReadKey()
     End
 End.
 
