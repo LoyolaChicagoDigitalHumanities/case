@@ -136,7 +136,7 @@ Begin
             Write('  Do you want to write over it (y/n)? ');
             Readln(overwrite)
         End
-    Until (tmp = 1) or (overwrite = 'y') or (overwrite = 'Y');
+    Until (tmp <> 0) or (overwrite = 'y') or (overwrite = 'Y');
     Write('Do you want an error file created (y/n)? ');
     Readln(want_errorc);
     want_error := not((want_errorc = 'n') or (want_errorc = 'N'));
@@ -158,7 +158,7 @@ Begin
                 Write('  Do you want to write over it (y/n)? ');
                 Readln(overwrite)
             End
-        Until (tmp = 1) or (overwrite = 'y') or (overwrite = 'Y');
+        Until (tmp <> 0) or (overwrite = 'y') or (overwrite = 'Y');
         Rewrite(errorfile)
     End;
     maxinsert := 1000;

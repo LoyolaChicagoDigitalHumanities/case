@@ -70,6 +70,7 @@ Begin
     want_error := not((want_errorc = 'n') or (want_errorc = 'N'));
     If want_error then
     Begin
+        overwrite := 'n';
         Repeat
             Write('Filename for error file : ');
             Readln(errname);
@@ -79,13 +80,13 @@ Begin
             Reset(errorfile);
             {$i+}
             temp := ioresult;
-            overwrite := 'n';
+            Writeln('IOResult ', temp);
             If temp = 0 then
             Begin
                 Write('File already on disk.  Do you want to write over it? ');
                 Readln(overwrite)
             End
-        Until (temp = 1) or (overwrite = 'y') or (overwrite = 'Y');
+        Until (temp <> 0) or (overwrite = 'y') or (overwrite = 'Y');
         Rewrite(errorfile)
     End;
     Reset(master);
@@ -102,8 +103,10 @@ Begin
     illegal := illegal + [chr(11), chr(12)];
     For i := 14 to 31 do
         illegal := illegal + [chr(i)];
+    {
     For i := 128 to 255 do
         illegal := illegal + [chr(i)]
+    }
 End;
 
 PROCEDURE Strip_controls;

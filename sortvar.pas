@@ -114,7 +114,7 @@ Begin
                 Write('  Do you want to write over it (y/n)? ');
                 Readln(overwrite)
             End
-        Until (tmp = 1) or (overwrite = 'y') or (overwrite = 'Y');
+        Until (tmp <> 0) or (overwrite = 'y') or (overwrite = 'Y');
         getcode(code);
         codechart[code] := i;
         Rewrite(f[i])
