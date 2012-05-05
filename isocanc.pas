@@ -400,7 +400,6 @@ Begin           { scan text }
 End;
 
 Begin           {main program}
-    ClrScr;
     initialise;
     While not eof(inpfile) do
     Begin

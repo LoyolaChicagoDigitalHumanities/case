@@ -5,7 +5,6 @@ VAR
     num_choice  : Integer;
 
 Begin
-  ClrScr;
   Writeln;
   Writeln;
   Writeln;

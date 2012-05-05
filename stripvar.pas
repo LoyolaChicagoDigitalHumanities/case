@@ -76,7 +76,6 @@ End;
 
 PROCEDURE initialise;
 Begin
-    ClrScr;
     lineno := 1;
     outpos := 0;
     errors := false;

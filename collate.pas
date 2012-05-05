@@ -1058,7 +1058,6 @@ Begin { of Backwards }
 End;
 
 Begin { main program }
-    { ClrScr; }
     lb_space.char[1] := ' '; 
     lb_space.char[2] := '(';
     lb_space.lenth   := 2;

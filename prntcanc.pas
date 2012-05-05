@@ -101,7 +101,6 @@ Begin
 End;
 
 Begin
-    ClrScr;
     initialise;
     While not eof(infile) do
         process_line;

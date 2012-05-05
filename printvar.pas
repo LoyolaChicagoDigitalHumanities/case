@@ -76,7 +76,6 @@ End;
 
 PROCEDURE initialise;
 Begin
-    ClrScr;
     lineno := 0;
     punct := ['.',',','-','(',')',':',';','_','"','`','''','!','?','/'];
     Repeat

@@ -104,7 +104,6 @@ Begin
 End;
 
 Begin
-    ClrScr;
     lineno := 0;
     linelen := 0;
     lastch := ' ';

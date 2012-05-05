@@ -979,7 +979,6 @@ Begin { read in numbs }
 End;
 
 Begin  { MAIN }
-    ClrScr;
     Get_info;
     Set_up;
     While any_not_empty do

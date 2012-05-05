@@ -41,7 +41,6 @@ End;
 
 PROCEDURE Initialize;
 Begin
-    ClrScr;
     Repeat
         Write('Master file name: ');
         Readln(tempmast);

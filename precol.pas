@@ -245,7 +245,6 @@ Begin {Main program of PAGINATE}
                 Else 
                     If not (((rec[1] = '{') and ((rec[2] = 'c') or
                              (rec[2] = 'r'))) or (rec[1] = '*')) then
- { ignore centred text,titles and comments - line starts with {c,{r or *. }
                     Begin 
                         linenum := linenum + 1;
                         If (rec[1] = ' ') and (rec[2] = ' ') and 
@@ -457,7 +456,6 @@ Begin { main program of MATCH }
 End;
 
 Begin  { main program }
-    ClrScr;
     Assign(master,'master.tmp');
     Assign(compare,'compare.tmp');
     Paginate(master,'outmst.tmp');

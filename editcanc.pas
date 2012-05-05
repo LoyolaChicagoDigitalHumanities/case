@@ -574,7 +574,6 @@ Begin {main file}
 End;        
 
 Begin
-    ClrScr;
     Initialise;
     Main_file;
     Close(inpfile);

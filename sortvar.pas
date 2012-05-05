@@ -244,7 +244,6 @@ Begin
 End;
 
 Begin
-    ClrScr;
     initialize;
     openfiles;
     processvariants;
