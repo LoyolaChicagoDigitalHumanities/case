@@ -5,7 +5,7 @@ EXES=collate conflate editcanc isocanc menu precol preiso printcfl printvar prnt
 all: $(EXES)
 
 clean: 
-	rm -f $(EXES) *.o *~
+	rm -rf $(EXES) units/ *.o *~
 
 collate: collate
 	$(PASCAL) collate.pas
