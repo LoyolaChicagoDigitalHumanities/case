@@ -9,91 +9,116 @@
 """
 
 import sys
+import re
+
+
+
+# Transformations for CASE
+
+# This function handles trailing - or --. Can actually pass any type of dash and 
+# indicate whether the hyphen(s) should be deleted when joining with words
+# on next line.
+
+def ordinary_eol_dash_or_hyphen(line1, line2, hyphen_type, delete_hyphens=False):
+
+   if not line1[-1].endswith(hyphen_type):
+      return (line1, line2)
+
+   l2iter = iter(line2)
+   item = l2iter.next()
+
+   if isNonWord(item):
+      return (line1, line2)
+
+   if delete_hyphens:
+      lastWord = line1[-1]
+      lastWord = lastWord[:-len(hyphen_type)]
+      line1.pop()
+      item = lastWord + item
+
+   line1len = len(line1)
+   line1.append(item)
+   for item in l2iter:
+      if isWord(item): break
+      line1.append(item)
+
+   tokensAdded = len(line1) - line1len
+   popN(line2, tokensAdded)
+   return (line1, line2)
+
+# This function handles the case of a leading dash.
+# You can indicate the type of dash. Right now, we support --.
+
+
+def ordinary_bol_dash(line1, line2, dash_type = '--'):
+
+   if not line2[0].startswith(dash_type):
+      return (line1, line2)
+
+   l1lastword = line1[-1]
+   if isNonWord(l1lastword):
+      return (line1, line2)
+
+   line1.pop()
+   line2.insert(0, l1lastword)
+   return (line1, line2)
+
+#
+# This is to indicate a trailing hyphen that is to be left untouched.
+# This rule is applied last.
 
 def preserved_eol_hyphen(line):
    if line[-1] == '=':
-      return line[0:-1] + '-'
-   else:
-      return line
+      line[-1] = '-'
+   return line
 
-def ordinary_eol_hyphen(line1, line2):
+def regexWSSplit(item):
+   return re.split('(\s+)', item)
 
-   if len(line1) < 2:
-      return (line1, line2)
+def regexWordSplit(line):
+   tokens = re.split('(\W+)', line)
+   tokenList = []
+   for token in tokens:
+      wsTokens = regexWSSplit(token)
+      tokenList = tokenList + wsTokens
+   return [ item for item in tokenList if item != '' ]
 
-   # Line ends with hyphen but NOT two hyphens (dash)
-   if line1[-1] != '-' or line1[-2] == '-':
-      return (line1, line2)
+def isNonWord(s):
+   return re.match("^\W+$", s) != None
 
-   line1words = line1.split()
-   line2words = line2.split()
-   (line2hd, line2rest) = (line2words[0], line2words[1:])
-   line1lastword = line1words.pop()
-   line1words.append(line1lastword[0:-1] + line2hd)
-   newline1 = ' '.join(line1words)
-   newline2 = ' '.join(line2rest)
-   return (newline1, newline2)
+def isWord(s):
+   return re.match("^\w+$", s) != None
 
-def ordinary_eol_dash(line1, line2):
+def popN(someList, n):
+   for i in range(0, n):
+      someList.pop(0)
 
-   if len(line1) < 3:   # -- + at least one character before the --
-      return (line1, line2)
+def main():
+   filename = sys.argv[1]
+   newfilename = sys.argv[2]
+   if filename == newfilename:
+      print "In and out filename must be different."
+      sys.exit(1)
 
-   # Line ends with hyphen but NOT two hyphens (dash)
-   if line1[-2:] != '--':
-      return (line1, line2)
+   with open(filename) as infile:
+      doc = infile.readlines()
 
-   line1words = line1.split()
-   line2words = line2.split()
-   (line2hd, line2rest) = (line2words[0], line2words[1:])
-   line1lastword = line1words.pop()
-   line1words.append(line1lastword + line2hd)
-   newline1 = ' '.join(line1words)
-   newline2 = ' '.join(line2rest)
-   return (newline1, newline2)
+   for i in range(0, len(doc)):
+      doc[i] = regexWordSplit(doc[i].rstrip())
 
-def ordinary_bol_dash(line1, line2):
+   for i in range(0, len(doc)-1):
+      (doc[i], doc[i+1]) = ordinary_eol_dash_or_hyphen(doc[i], doc[i+1], '--', False)
+      (doc[i], doc[i+1]) = ordinary_eol_dash_or_hyphen(doc[i], doc[i+1], '-', True)
+      (doc[i], doc[i+1]) = ordinary_bol_dash(doc[i], doc[i+1])
 
-   if len(line2) < 3:   # -- + at least one character before the --
-      return (line1, line2)
+   for i in range(0, len(doc)-1):
+      doc[i] = preserved_eol_hyphen(doc[i])
 
-   # Line ends with hyphen but NOT two hyphens (dash)
-   if line2[0:2] != '--':
-      return (line1, line2)
+   for i in range(0, len(doc)):
+      doc[i] = ''.join(doc[i])
 
-   line1words = line1.split()
-   line2words = line2.split()
-   (line1head, line1tail) = (line1words[0:-1], line1words[-1])
-   line2firstword = line2words[0]
-   newline1 = ' '.join(line1head)
-   newline2 = line1tail + ' '.join(line2words)
-   return (newline1, newline2)
+   with open(newfilename, "w") as out:
+      out.write('\n'.join(doc))
 
-
-filename = sys.argv[1]
-newfilename = sys.argv[2]
-if filename == newfilename:
-   print "In and out filename must be different."
-   sys.exit(1)
-
-with open(filename) as file:
-   doc = file.readlines()
-
-for i in range(0, len(doc)):
-   doc[i] = doc[i].rstrip()
-
-# Transformations that involve pairs of lines
-for i in range(0, len(doc)-1):
-   (doc[i], doc[i+1]) = ordinary_eol_hyphen(doc[i], doc[i+1])
-
-for i in range(0, len(doc)-1):
-   (doc[i], doc[i+1]) = ordinary_eol_dash(doc[i], doc[i+1])
-   (doc[i], doc[i+1]) = ordinary_bol_dash(doc[i], doc[i+1])
-
-# Transformations that are contained within a line
-for i in range(0, len(doc)-1):
-   doc[i] = preserved_eol_hyphen(doc[i])
-
-with open(newfilename, "w") as out:
-   out.write('\n'.join(doc))
-
+if __name__ == '__main__':
+   main()
